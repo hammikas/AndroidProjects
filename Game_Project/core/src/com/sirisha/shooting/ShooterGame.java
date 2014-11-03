@@ -45,26 +45,25 @@ public class ShooterGame implements ApplicationListener {
 
         batch = new SpriteBatch();
 
-        background = new Texture(Gdx.files.internal("Untitled-3.png"));
-        Texture spaceshipTexture = new Texture(Gdx.files.internal("mario.png"));
+        background = new Texture(Gdx.files.internal("backgroundmm.png"));
+        Texture spaceshipTexture = new Texture(Gdx.files.internal("mario200x200.png"));
         Sprite spaceshipSprite = new Sprite(spaceshipTexture);
         spaceshipAnimated = new AnimatedSprite(spaceshipSprite);
         spaceshipAnimated.setPosition(800 / 2, 0);
 
         Texture shotTexture = new Texture(Gdx.files.internal("firebomb44x40final.png"));
         Texture enemyShotTexture = new Texture(Gdx.files.internal("enemy-shot-spritesheet.png"));
-        shotManager = new ShotManager(shotTexture, enemyShotTexture);
 
-        Texture enemyTexture = new Texture(Gdx.files.internal("enemy-spritesheet.png"));
+        Texture enemyTexture = new Texture(Gdx.files.internal("manie240x240.png"));
         enemy = new Enemy(enemyTexture, shotManager);
 
         //Setup Gold Coins
         Texture goldCoinTexture = new Texture(Gdx.files.internal("goldcoins.png"));
-        goldCoinsShotManager = new ShotManager(shotTexture, goldCoinTexture);
+        shotManager = new ShotManager(shotTexture, enemyShotTexture, goldCoinTexture);
         Texture goldCoinShipTexture = new Texture(Gdx.files.internal("blanksprite.png"));
         goldCoins = new GoldCoins(goldCoinShipTexture, goldCoinsShotManager);
 
-        collisionManager = new CollisionManager(context, spaceshipAnimated, enemy, shotManager);
+        collisionManager = new CollisionManager(context, spaceshipAnimated, enemy, goldCoins, shotManager);
 
         gameMusic = Gdx.audio.newMusic(Gdx.files.internal("game-music.mp3"));
         gameMusic.setVolume(.25f);

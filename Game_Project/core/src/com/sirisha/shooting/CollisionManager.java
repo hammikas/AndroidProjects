@@ -12,18 +12,22 @@ public class CollisionManager {
     private final Enemy enemy;
     private final ShotManager shotManager;
     private final Context context;
+    private final GoldCoins goldCoins;
+    public int goldCoinCount = 0;
 
     public CollisionManager(Context ctx, AnimatedSprite spaceshipAnimated, Enemy enemy,
-                            ShotManager shotManager) {
+                            GoldCoins goldCoins, ShotManager shotManager) {
         this.spaceshipAnimated = spaceshipAnimated;
         this.enemy = enemy;
         this.shotManager = shotManager;
         this.context = ctx;
+        this.goldCoins = goldCoins;
     }
 
     public void handleCollisions() {
         handleEnemyShot();
         handlePlayerShot();
+        handleGoldCoinShot();
     }
 
     private void handlePlayerShot() {
@@ -36,13 +40,17 @@ public class CollisionManager {
 
     private void vibrateDevice() {
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        v.vibrate(500);
+        // Vibrate for 1000 milliseconds
+        v.vibrate(1000);
     }
 
     private void handleEnemyShot() {
         if(shotManager.playerShotTouches(enemy.getBoundingBox()))
             enemy.hit();
     }
-}
 
+    private void handleGoldCoinShot() {
+        if (shotManager.goldCoinTouches(spaceshipAnimated.getBoundingBox()))
+            goldCoinCount++;
+    }
+}

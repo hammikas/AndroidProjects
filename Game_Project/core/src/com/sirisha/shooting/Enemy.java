@@ -74,7 +74,7 @@ public class Enemy {
 
     private boolean shouldChangeDirection() {
         Random random = new Random();
-        return random.nextInt(21) == 0;
+        return random.nextInt(15) == 0;
     }
 
     public Rectangle getBoundingBox() {

@@ -62,19 +62,19 @@ public class GoldCoins {
                 animatedSprite.changeDirection();
 
             if(shouldFire())
-                shotManager.fireEnemyShot(animatedSprite.getX());
+                shotManager.fireGoldCoins(animatedSprite.getX());
             animatedSprite.move();
         }
     }
 
     private boolean shouldFire() {
         Random random = new Random();
-        return random.nextInt(51) == 0;
+        return random.nextInt(60) == 0;
     }
 
     private boolean shouldChangeDirection() {
         Random random = new Random();
-        return random.nextInt(21) == 0;
+        return random.nextInt(25) == 0;
     }
 
     public Rectangle getBoundingBox() {

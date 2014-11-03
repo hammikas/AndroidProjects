@@ -19,16 +19,20 @@ public class ShotManager {
     private static final int SHOT_Y_OFFSET = 90;
     private static final float MINIMUM_TIME_BETWEEN_SHOTS = .5f;
     private static final float ENEMY_SHOT_Y_OFFSET = 400;
+    private static final float GOLD_COIN_Y_OFFSET = 400;
     private final Texture shotTexture;
     private List<AnimatedSprite> shots = new ArrayList<AnimatedSprite>();
     private float timeSinceLastShot = 0;
     private Sound laser = Gdx.audio.newSound(Gdx.files.internal("laser-bolt.mp3"));
     private List<AnimatedSprite> enemyShots = new ArrayList<AnimatedSprite>();
     private final Texture enemyShotTexture;
+    private final Texture goldCoinTexture;
+    private List<AnimatedSprite> goldCoins = new ArrayList<AnimatedSprite>();
 
-    public ShotManager(Texture shotTexture, Texture enemyShotTexture) {
+    public ShotManager(Texture shotTexture, Texture enemyShotTexture, Texture goldCoinTexture) {
         this.shotTexture = shotTexture;
         this.enemyShotTexture = enemyShotTexture;
+        this.goldCoinTexture = goldCoinTexture;
     }
 
     public void firePlayerShot(int shipCenterXLocation)
@@ -69,6 +73,15 @@ public class ShotManager {
                 j.remove();
         }
 
+        Iterator<AnimatedSprite> k = goldCoins.iterator();
+        while(k.hasNext())
+        {
+            AnimatedSprite shot = k.next();
+            shot.move();
+            if(shot.getY() < 0)
+                k.remove();
+        }
+
         timeSinceLastShot += Gdx.graphics.getDeltaTime();
     }
 
@@ -82,6 +95,11 @@ public class ShotManager {
         {
             shot.draw(batch);
         }
+
+        for(AnimatedSprite shot : goldCoins)
+        {
+            shot.draw(batch);
+        }
     }
 
     public void fireEnemyShot(int enemyCenterXLocation) {
@@ -92,6 +110,14 @@ public class ShotManager {
         enemyShots.add(newShotAnimated);
     }
 
+    public void fireGoldCoins(int goldCoinShipXLocation) {
+        Sprite newShot = new Sprite(goldCoinTexture);
+        AnimatedSprite newShotAnimated = new AnimatedSprite(newShot);
+        newShotAnimated.setPosition(goldCoinShipXLocation, GOLD_COIN_Y_OFFSET);
+        newShotAnimated.setVelocity(new Vector2(0, -SHOT_SPEED));
+        goldCoins.add(newShotAnimated);
+    }
+
     public boolean playerShotTouches(Rectangle boundingBox) {
         return shotTouches(shots, boundingBox);
     }
@@ -99,6 +125,8 @@ public class ShotManager {
     public boolean enemyShotTouches(Rectangle boundingBox) {
         return shotTouches(enemyShots, boundingBox);
     }
+
+    public boolean goldCoinTouches(Rectangle boundingBox) { return shotTouches(goldCoins, boundingBox); }
 
     private boolean shotTouches(List<AnimatedSprite> shots,
                                 Rectangle boundingBox) {
