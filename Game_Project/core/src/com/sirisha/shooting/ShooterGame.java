@@ -23,6 +23,7 @@ public class ShooterGame implements ApplicationListener {
     private Texture background;
     private AnimatedSprite spaceshipAnimated;
     private ShotManager shotManager;
+    private ShotManager goldCoinsShotManager;
     private Music gameMusic;
     private Enemy enemy;
     private GoldCoins goldCoins;
@@ -44,7 +45,7 @@ public class ShooterGame implements ApplicationListener {
 
         batch = new SpriteBatch();
 
-        background = new Texture(Gdx.files.internal("Untitled-3.jpg"));
+        background = new Texture(Gdx.files.internal("Untitled-3.png"));
         Texture spaceshipTexture = new Texture(Gdx.files.internal("mario.png"));
         Sprite spaceshipSprite = new Sprite(spaceshipTexture);
         spaceshipAnimated = new AnimatedSprite(spaceshipSprite);
@@ -59,9 +60,9 @@ public class ShooterGame implements ApplicationListener {
 
         //Setup Gold Coins
         Texture goldCoinTexture = new Texture(Gdx.files.internal("goldcoins.png"));
-        shotManager = new ShotManager(shotTexture, goldCoinTexture);
+        goldCoinsShotManager = new ShotManager(shotTexture, goldCoinTexture);
         Texture goldCoinShipTexture = new Texture(Gdx.files.internal("blanksprite.png"));
-        goldCoins = new GoldCoins(goldCoinShipTexture, shotManager);
+        goldCoins = new GoldCoins(goldCoinShipTexture, goldCoinsShotManager);
 
         collisionManager = new CollisionManager(context, spaceshipAnimated, enemy, shotManager);
 
@@ -95,6 +96,8 @@ public class ShooterGame implements ApplicationListener {
         spaceshipAnimated.draw(batch);
         enemy.draw(batch);
         shotManager.draw(batch);
+        goldCoinsShotManager.draw(batch);
+        goldCoins.draw(batch);
         batch.end();
 
         handleInput();
@@ -103,7 +106,9 @@ public class ShooterGame implements ApplicationListener {
         {
             spaceshipAnimated.move();
             enemy.update();
+            goldCoins.update();
             shotManager.update();
+            goldCoinsShotManager.update();
 
             collisionManager.handleCollisions();
         }

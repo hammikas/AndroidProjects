@@ -62,7 +62,7 @@ public class GoldCoins {
                 animatedSprite.changeDirection();
 
             if(shouldFire())
-                shotManager.fireGoldCoin(animatedSprite.getX());
+                shotManager.fireEnemyShot(animatedSprite.getX());
             animatedSprite.move();
         }
     }
