@@ -69,7 +69,7 @@ public class Enemy {
 
     private boolean shouldFire() {
         Random random = new Random();
-        return random.nextInt(51) == 0;
+        return random.nextInt(20) == 0;
     }
 
     private boolean shouldChangeDirection() {

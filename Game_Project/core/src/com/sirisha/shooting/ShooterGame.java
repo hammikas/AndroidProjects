@@ -23,7 +23,6 @@ public class ShooterGame implements ApplicationListener {
     private Texture background;
     private AnimatedSprite spaceshipAnimated;
     private ShotManager shotManager;
-    private ShotManager goldCoinsShotManager;
     private Music gameMusic;
     private Enemy enemy;
     private GoldCoins goldCoins;
@@ -34,6 +33,7 @@ public class ShooterGame implements ApplicationListener {
     public ShooterGame(Context ctx) {
         this.context = ctx;
     }
+    public int livesCount = 0;
 
     @Override
     public void create() {
@@ -53,15 +53,13 @@ public class ShooterGame implements ApplicationListener {
 
         Texture shotTexture = new Texture(Gdx.files.internal("firebomb44x40final.png"));
         Texture enemyShotTexture = new Texture(Gdx.files.internal("enemy-shot-spritesheet.png"));
+        Texture goldCoinTexture = new Texture(Gdx.files.internal("goldcoins.png"));
+        Texture goldCoinShipTexture = new Texture(Gdx.files.internal("blanksprite.png"));
 
+        shotManager = new ShotManager(shotTexture, enemyShotTexture, goldCoinTexture);
         Texture enemyTexture = new Texture(Gdx.files.internal("manie240x240.png"));
         enemy = new Enemy(enemyTexture, shotManager);
-
-        //Setup Gold Coins
-        Texture goldCoinTexture = new Texture(Gdx.files.internal("goldcoins.png"));
-        shotManager = new ShotManager(shotTexture, enemyShotTexture, goldCoinTexture);
-        Texture goldCoinShipTexture = new Texture(Gdx.files.internal("blanksprite.png"));
-        goldCoins = new GoldCoins(goldCoinShipTexture, goldCoinsShotManager);
+        goldCoins = new GoldCoins(goldCoinShipTexture, shotManager);
 
         collisionManager = new CollisionManager(context, spaceshipAnimated, enemy, goldCoins, shotManager);
 
@@ -85,17 +83,27 @@ public class ShooterGame implements ApplicationListener {
         batch.begin();
         batch.draw(background, 0, 0);
 
+        BitmapFont goldCoinFont = new BitmapFont();
+        goldCoinFont.setScale(1);
+        goldCoinFont.draw(batch, "Coins : " + collisionManager.goldCoinCount, 720, 470);
+
+        BitmapFont livesFont = new BitmapFont();
+        livesFont.setScale(1);
+        livesFont.draw(batch, "Lives : " + livesCount, 10, 470);
+
         if(isGameOver)
         {
             BitmapFont font = new BitmapFont();
             font.setScale(5);
             font.draw(batch, "PLAYER HIT", 200, 200);
+
+            if (livesCount > 3)
+                System.exit(0);
         }
 
         spaceshipAnimated.draw(batch);
         enemy.draw(batch);
         shotManager.draw(batch);
-        goldCoinsShotManager.draw(batch);
         goldCoins.draw(batch);
         batch.end();
 
@@ -107,7 +115,6 @@ public class ShooterGame implements ApplicationListener {
             enemy.update();
             goldCoins.update();
             shotManager.update();
-            goldCoinsShotManager.update();
 
             collisionManager.handleCollisions();
         }
@@ -123,6 +130,8 @@ public class ShooterGame implements ApplicationListener {
         {
             if(isGameOver)
             {
+                livesCount++;
+
                 spaceshipAnimated.setDead(false);
                 isGameOver = false;
             }
