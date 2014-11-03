@@ -44,6 +44,5 @@ public class CollisionManager {
         if(shotManager.playerShotTouches(enemy.getBoundingBox()))
             enemy.hit();
     }
-
 }
 

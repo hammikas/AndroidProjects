@@ -25,6 +25,7 @@ public class ShooterGame implements ApplicationListener {
     private ShotManager shotManager;
     private Music gameMusic;
     private Enemy enemy;
+    private GoldCoins goldCoins;
     private CollisionManager collisionManager;
     private boolean isGameOver = false;
     private Context context;
@@ -55,6 +56,12 @@ public class ShooterGame implements ApplicationListener {
 
         Texture enemyTexture = new Texture(Gdx.files.internal("enemy-spritesheet.png"));
         enemy = new Enemy(enemyTexture, shotManager);
+
+        //Setup Gold Coins
+        Texture goldCoinTexture = new Texture(Gdx.files.internal("goldcoins.png"));
+        shotManager = new ShotManager(shotTexture, goldCoinTexture);
+        Texture goldCoinShipTexture = new Texture(Gdx.files.internal("blanksprite.png"));
+        goldCoins = new GoldCoins(goldCoinShipTexture, shotManager);
 
         collisionManager = new CollisionManager(context, spaceshipAnimated, enemy, shotManager);
 

@@ -92,7 +92,6 @@ public class AnimatedSprite {
         {
             sprite.setX( ShooterGame.SCREEN_WIDTH - getSpriteWidth());
         }
-
     }
 
     public void setVelocity(Vector2 velocity) {
@@ -113,8 +112,6 @@ public class AnimatedSprite {
 
     public void changeDirection() {
         velocity.x = -velocity.x;
-
-
     }
 
     public Rectangle getBoundingBox() {
@@ -123,7 +120,6 @@ public class AnimatedSprite {
 
     public void setDead(boolean isDead) {
         this.isDead = isDead;
-
     }
 
     public boolean isDead() {
